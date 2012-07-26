@@ -1,7 +1,6 @@
-export PATH=/usr/local/bin:/usr/bin:$JAVA_HOME/bin:~/.cabal/bin/:~/bin/:$PATH
-export JAVA_HOME=$(/usr/libexec/java_home)
-export HREF_DATADIR=/usr/share/href:$HREF_DATADIR
+export PATH=/usr/local/bin:/usr/bin:~/.cabal/bin/:~/bin/:/usr/texbin/:$PATH
 export EDITOR=vim
+export NODE_PATH=/usr/local/lib/node_modules:$PATH
 export LANG=ja_JP.UTF-8
 
 ## gisty
@@ -20,7 +19,7 @@ precmd () {
 }
 PROMPT="%{${fg[green]}%}%~%{${reset_color}%}%% "
 RPROMPT="%1(v|%F{yellow}%1v%f|)"
-# PROMPT2="%{${fg[green]}%}%_%{${reset_color}%}%1(v|%{${vcs_info_msg_0_}%}|)%% "
+#PROMPT2="%{${fg[green]}%}%_%{${reset_color}%}%1(v|%{${vcs_info_msg_0_}%}|)%% "
 SPROMPT="%B%{${fg[yellow]}%}%r is correct? [n,y,a,e]:%{${reset_color}%}%b "
 
 case "${TERM}" in
@@ -135,8 +134,7 @@ setopt nolistbeep
 setopt nobeep
 setopt complete_aliases
 
-if [ $SHLVL = 1 ];then
-    tmux -2
-fi
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z} r:|[-_.]=**'
 
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"  # This loads RVM into a shell session.
+if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+

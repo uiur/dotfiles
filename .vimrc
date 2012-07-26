@@ -1,25 +1,22 @@
+set nocompatible
 filetype off
 syntax on
+filetype plugin indent off
 
-" Vundle
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+if has('vim_starting')
+  set runtimepath+=~/.vim/bundle/neobundle.vim/
+  call neobundle#rc(expand('~/.vim/bundle/'))
+endif
 
-Bundle 'gmarik/vundle'
-
-"Bundle 'Smooth-Scroll'
-Bundle 'hrp/EnhancedCommentify'
-Bundle 'tpope/vim-rails'
-Bundle "git://github.com/scrooloose/nerdtree.git"
-""Bundle 'AutoClose'
-Bundle 'unite.vim'
-Bundle 'molokai'
-Bundle 'desert256.vim'
-Bundle 'kchmck/vim-coffee-script'
-Bundle 'taglist.vim'
-Bundle 'JavaScript-syntax'
-Bundle 'smartword'
-Bundle 'jQuery'
+NeoBundle 'Shougo/vimproc'
+NeoBundle 'Shougo/unite.vim'
+NeoBundle 'Shougo/neocomplcache'
+NeoBundle 'desert256.vim'
+NeoBundle 'rails.vim'
+NeoBundle 'JavaScript-syntax'
+NeoBundle 'smartword'
+NeoBundle 'sudo.vim'
+NeoBundle 'hrp/EnhancedCommentify'
 
 "" key map
 noremap ; :
@@ -44,20 +41,13 @@ au FileType unite inoremap <silent> <buffer> <C-c><C-c> <Esc>:q<CR>
 
 " no comment when paste
 au FileType * set formatoptions-=ro
-" use ghc functionality for haskell files
-au Bufenter *.hs compiler ghc
 
-let g:haddock_browser = "/Applications/Google\ Chrome.app"
-      
 nnoremap <silent> <Space>. :<C-u>edit $MYVIMRC<CR>
 
 "Reload .vimrc
 nnoremap <silent> <Space>s. :<C-u>source $MYVIMRC<CR>
 
 nnoremap <silent> <Space>, :<C-u>edit ~/.zshrc<CR>
-
-nnoremap <Space>b :<C-u>BundleInstall<CR>
-
 
 "Start NERDTree
 nnoremap <silent> <Space>n :<C-u>NERDTree<CR>
@@ -79,7 +69,7 @@ nnoremap ,sp :<C-u>Rspec
 " setting
 set enc=utf-8
 set fenc=utf-8
-set fencs=utf-8,euc-jp,cp932
+set fencs=iso-2022-jp,utf-8,euc-jp,cp932
 
 set textwidth=0
 set autoread
@@ -178,4 +168,3 @@ autocmd FileType haskell setl smartindent
 autocmd BufWritePost *.coffee silent CoffeeMake! -cb | cwindow | redraw!
 
 filetype plugin indent on
-filetype plugin on

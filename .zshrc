@@ -138,3 +138,4 @@ zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z} r:|[-_.]=**'
 
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 
+source ~/perl5/perlbrew/etc/bashrc

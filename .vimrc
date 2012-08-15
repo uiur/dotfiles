@@ -17,6 +17,10 @@ NeoBundle 'JavaScript-syntax'
 NeoBundle 'smartword'
 NeoBundle 'sudo.vim'
 NeoBundle 'hrp/EnhancedCommentify'
+NeoBundle 'surround.vim'
+NeoBundle 'h1mesuke/vim-alignta'
+NeoBundle 'hotchpotch/perldoc-vim'
+NeoBundle 'perlomni.vim'
 
 "" key map
 noremap ; :
@@ -69,7 +73,7 @@ nnoremap ,sp :<C-u>Rspec
 " setting
 set enc=utf-8
 set fenc=utf-8
-set fencs=iso-2022-jp,utf-8,euc-jp,cp932
+set fencs=utf-8,iso-2022-jp,euc-jp,cp932
 
 set textwidth=0
 set autoread

@@ -16,7 +16,7 @@ precmd () {
   LANG=en_US.UTF-8 vcs_info
   [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
 }
-PROMPT="%{${fg[green]}%}%~%{${reset_color}%}%% "
+PROMPT="%K{black}%B%{${fg[red]}%}%r%~%{${reset_color}%}%% "
 RPROMPT="%1(v|%F{yellow}%1v%f|)"
 PROMPT2="%{${fg[green]}%}%_%{${reset_color}%}%1(v|%{${vcs_info_msg_0_}%}|)%% "
 SPROMPT="%B%{${fg[yellow]}%}%r is correct? [n,y,a,e]:%{${reset_color}%}%b "
@@ -32,7 +32,6 @@ esac
 export LSCOLORS=gxfxxxxxcxxxxxxxxxgxgx
 export LS_COLORS='di=01;36:ln=01;35:ex=01;32'
 zstyle ':completion:*' list-colors 'di=36' 'ln=35' 'ex=32'
-
 
 ## aliases
 #
@@ -130,6 +129,7 @@ setopt automenu
 setopt auto_param_keys
 setopt complete_in_word
 setopt auto_resume
+setopt prompt_subst
 
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z} r:|[-_.]=**'
 

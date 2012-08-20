@@ -10,7 +10,6 @@ autoload colors
 colors
 
 autoload -Uz vcs_info
-zstyle ':vcs_info:*' enable git svn
 zstyle ':vcs_info:*' formats "[%b]"
 precmd () {
   psvar=()
@@ -19,7 +18,7 @@ precmd () {
 }
 PROMPT="%{${fg[green]}%}%~%{${reset_color}%}%% "
 RPROMPT="%1(v|%F{yellow}%1v%f|)"
-#PROMPT2="%{${fg[green]}%}%_%{${reset_color}%}%1(v|%{${vcs_info_msg_0_}%}|)%% "
+PROMPT2="%{${fg[green]}%}%_%{${reset_color}%}%1(v|%{${vcs_info_msg_0_}%}|)%% "
 SPROMPT="%B%{${fg[yellow]}%}%r is correct? [n,y,a,e]:%{${reset_color}%}%b "
 
 case "${TERM}" in
@@ -37,7 +36,6 @@ zstyle ':completion:*' list-colors 'di=36' 'ln=35' 'ex=32'
 
 ## aliases
 #
-alias vi='env LANG=ja_JP.UTF-8 /Applications/MacVim.app/Contents/MacOS/Vim "$@"'
 alias v='vim'
 alias gvim='env LANG=ja_JP.UTF-8 open -a /Applications/MacVim.app "$@"'
 alias reload='source ~/.zshrc'
@@ -81,9 +79,6 @@ alias bunin='bundle install'
 alias bune='bundle exec'
 alias m='mate'
 
-alias cstop='/var/cassandra/cstop.sh'
-alias cstart='/var/cassandra/cstart.sh'
-
 alias svn-push='git stash && git svn dcommit && git stash pop'
 alias svn-pull='git stash && git svn rebase && git stash pop'
 
@@ -102,9 +97,6 @@ alias gcc='gcc -Wall'
 alias g++='g++ -Wall'
 
 alias tmux='tmux -2'
-
-# copy storage-conf.xml
-alias cpst='sed -e "s/<!-- SavedCachesDirectory>/<SavedCachesDirectory>/g" config/storage-conf.xml | sed -e "s/<\/SavedCachesDirectory -->/<\/SavedCachesDirectory>/g" > /var/cassandra/conf/storage-conf.xml' 
 
 # vim key-bind
 bindkey -v
@@ -133,6 +125,11 @@ setopt noautoremoveslash
 setopt nolistbeep
 setopt nobeep
 setopt complete_aliases
+setopt transient_rprompt
+setopt automenu
+setopt auto_param_keys
+setopt complete_in_word
+setopt auto_resume
 
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z} r:|[-_.]=**'
 

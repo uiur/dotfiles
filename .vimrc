@@ -8,30 +8,43 @@ if has('vim_starting')
   call neobundle#rc(expand('~/.vim/bundle/'))
 endif
 
+" NeoBundle
 NeoBundle 'Shougo/vimproc'
 NeoBundle 'Shougo/unite.vim'
+NeoBundle 'h1mesuke/unite-outline'
+NeoBundle 'ujihisa/unite-colorscheme'
+NeoBundle 'ujihisa/unite-font'
+" NeoBundle 'errormarker.vim'
+" NeoBundle 'scrooloose/syntastic'
 NeoBundle 'Shougo/neocomplcache'
 NeoBundle 'desert256.vim'
-NeoBundle 'rails.vim'
-NeoBundle 'JavaScript-syntax'
 NeoBundle 'smartword'
 NeoBundle 'sudo.vim'
 NeoBundle 'hrp/EnhancedCommentify'
 NeoBundle 'surround.vim'
 NeoBundle 'h1mesuke/vim-alignta'
-NeoBundle 'hotchpotch/perldoc-vim'
-NeoBundle 'perlomni.vim'
+NeoBundle 'kana/vim-smartchr'
 
-"" key map
+"" Language
+NeoBundle 'hotchpotch/perldoc-vim'
+NeoBundle 'jelera/vim-javascript-syntax'
+NeoBundle 'perlomni.vim'
+NeoBundle 'rails.vim'
+
+"" colorscheme
+NeoBundle 'tomasr/molokai'
+NeoBundle 'altercation/solarized'
+NeoBundle 'jnurmine/Zenburn'
+
+" Key Mapping
 noremap ; :
 noremap : ;
 
-" <C-m>で補完
 let g:unite_enable_start_insert=1
-nnoremap <silent> <C-h> :<C-u>Unite buffer<CR>
-nnoremap <silent> <C-n> :<C-u>Unite -buffer-name=file file<CR>
-nnoremap <silent> <C-z> :<C-u>Unite file_mru<CR>
-nnoremap <silent> <C-p> :<C-u>Unite -buffer-name=register register<CR>
+nnoremap <silent> <Space>b :<C-u>Unite buffer<CR>
+nnoremap <silent> <Space>f :<C-u>Unite file -buffer-name=file<CR>
+nnoremap <silent> <Space>z :<C-u>Unite file_mru<CR>
+nnoremap <silent> <Space>r :<C-u>Unite register -buffer-name=register<CR>
 
 " ウィンドウを分割して開く
 au FileType unite nnoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
@@ -42,6 +55,50 @@ au FileType unite inoremap <silent> <buffer> <expr> <C-l> unite#do_action('vspli
 " ESCキーを2回押すと終了する
 au FileType unite nnoremap <silent> <buffer> <C-c><C-c> :q<CR>
 au FileType unite inoremap <silent> <buffer> <C-c><C-c> <Esc>:q<CR>
+
+" unite-outline
+nnoremap <silent> <Space>l :<C-u>Unite outline -vertical -winwidth=40<CR>
+nnoremap <silent> <Space>L :<C-u>Unite outline -no-quit -vertical -winwidth=40 -buffer-name=outline<CR>
+
+" syntastic
+let g:syntastic_auto_loc_list=2
+
+" smartchr
+inoremap <buffer><expr> = smartchr#loop(' = ', ' == ', '=')
+
+" HTML
+autocmd FileType html inoremap <buffer><expr> = smartchr#loop('=')
+
+" JavaScript
+autocmd FileType javascript inoremap <buffer><expr> = smartchr#loop(' = ', ' == ', ' === ', '=')
+autocmd FileType javascript inoremap <buffer><expr> \ smartchr#one_of('function ', '\')
+autocmd FileType javascript :setlocal softtabstop=4
+autocmd FileType javascript :setlocal shiftwidth=4
+
+" Perl
+autocmd FileType perl inoremap <buffer><expr> . smartchr#one_of('.', '->', '.')
+autocmd FileType perl inoremap <buffer><expr> , smartchr#one_of(', ', ' => ', ',')
+autocmd FileType perl inoremap <buffer><expr>  =  smartchr#loop(' = ', ' == ', ' != ', ' =~ ', ' !~ ', ' <=> ', '=')
+
+" Ruby
+autocmd FileType ruby    inoremap <buffer><expr>  =  smartchr#loop(' = ', ' == ', ' === ', ' != ')
+autocmd FileType ruby    inoremap <buffer><expr> , smartchr#loop(', ', ' => ', ',')
+
+" Haskell
+autocmd FileType haskell setl autoindent
+autocmd FileType haskell setl smartindent
+
+"Coffee
+autocmd BufWritePost *.coffee silent CoffeeMake! -cb | cwindow | redraw!
+
+" Ruby
+imap <C-Space> <C-x><C-o>
+let g:rubycomplete_buffer_loading = 1
+let g:rubycomplete_classes_in_global = 1
+let g:rubycomplete_rails = 1
+
+" Scheme
+autocmd FileType scheme :let is_gauche=1 
 
 " no comment when paste
 au FileType * set formatoptions-=ro
@@ -114,12 +171,11 @@ nmap <silent> <C-c><C-c> ;nohlsearch<CR><Esc>
 set nocompatible
 set number
 
-"let g:solarized_termcolors=256
-"syntax enable
-"set background=dark
-"colorscheme solarized
-
-colorscheme desert256
+syntax enable
+set background=dark
+let g:solarized_termcolors=256
+colorscheme solarized
+"colorscheme molokai
 
 set wrap
 highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=darkgray
@@ -127,15 +183,6 @@ match ZenkakuSpace /　/
 
 "quickrun.vim
 silent! nmap <unique> <Space>r <Plug>(quickrun)
-
-"For vim-ruby
-imap <C-Space> <C-x><C-o>
-let g:rubycomplete_buffer_loading = 1
-let g:rubycomplete_classes_in_global = 1
-let g:rubycomplete_rails = 1
-
-" scheme.vim
-autocmd FileType scheme :let is_gauche=1 
 
 " Use neocomplcache.
 let g:neocomplcache_enable_at_startup = 1
@@ -164,11 +211,5 @@ inoremap <expr><C-e>  neocomplcache#cancel_popup()
 imap <expr><TAB> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : pumvisible() ? "\<C-n>" : "\<TAB>"
 smap <expr><TAB> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : pumvisible() ? "\<C-n>" : "\<TAB>"
 
-" Haskell
-autocmd FileType haskell setl autoindent
-autocmd FileType haskell setl smartindent
-
-"Coffee
-autocmd BufWritePost *.coffee silent CoffeeMake! -cb | cwindow | redraw!
 
 filetype plugin indent on

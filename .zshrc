@@ -1,11 +1,3 @@
-export PATH=/usr/local/bin:/usr/bin:~/.cabal/bin/:~/bin/:/usr/texbin/:$PATH
-export EDITOR=vim
-export NODE_PATH=/usr/local/lib/node_modules:$PATH
-export LANG=ja_JP.UTF-8
-
-## gisty
-export GISTY_DIR="$HOME/src/gists"
-
 autoload colors
 colors
 
@@ -16,7 +8,7 @@ precmd () {
   LANG=en_US.UTF-8 vcs_info
   [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
 }
-PROMPT="%K{black}%B%{${fg[red]}%}%r%~%{${reset_color}%}%% "
+PROMPT="%K{black}%B%{${fg[green]}%}%r%~%{${reset_color}%}%% "
 RPROMPT="%1(v|%F{yellow}%1v%f|)"
 PROMPT2="%{${fg[green]}%}%_%{${reset_color}%}%1(v|%{${vcs_info_msg_0_}%}|)%% "
 SPROMPT="%B%{${fg[yellow]}%}%r is correct? [n,y,a,e]:%{${reset_color}%}%b "
@@ -132,7 +124,3 @@ setopt auto_resume
 setopt prompt_subst
 
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z} r:|[-_.]=**'
-
-if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
-
-source ~/perl5/perlbrew/etc/bashrc

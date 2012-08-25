@@ -42,7 +42,8 @@ noremap : ;
 
 let g:unite_enable_start_insert=1
 nnoremap <silent> <Space>b :<C-u>Unite buffer<CR>
-nnoremap <silent> <Space>f :<C-u>Unite file -buffer-name=file<CR>
+nnoremap <silent> <Space>f :<C-u>Unite file file/new -buffer-name=file<CR>
+nnoremap <silent> <Space>g :<C-u>Unite file_rec -buffer-name=file<CR>
 nnoremap <silent> <Space>z :<C-u>Unite file_mru<CR>
 nnoremap <silent> <Space>r :<C-u>Unite register -buffer-name=register<CR>
 

@@ -28,8 +28,10 @@ NeoBundle 'kana/vim-smartchr'
 "" Language
 NeoBundle 'hotchpotch/perldoc-vim'
 NeoBundle 'jelera/vim-javascript-syntax'
-NeoBundle 'perlomni.vim'
+"perlomni 遅すぎ……
+"NeoBundle 'perlomni.vim'
 NeoBundle 'rails.vim'
+NeoBundle 'groenewege/vim-less'
 
 "" colorscheme
 NeoBundle 'tomasr/molokai'
@@ -47,15 +49,25 @@ nnoremap <silent> <Space>g :<C-u>Unite file_rec -buffer-name=file<CR>
 nnoremap <silent> <Space>z :<C-u>Unite file_mru<CR>
 nnoremap <silent> <Space>r :<C-u>Unite register -buffer-name=register<CR>
 
-" ウィンドウを分割して開く
 au FileType unite nnoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
 au FileType unite inoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
-" ウィンドウを縦に分割して開く
 au FileType unite nnoremap <silent> <buffer> <expr> <C-l> unite#do_action('vsplit')
 au FileType unite inoremap <silent> <buffer> <expr> <C-l> unite#do_action('vsplit')
 " ESCキーを2回押すと終了する
 au FileType unite nnoremap <silent> <buffer> <C-c><C-c> :q<CR>
 au FileType unite inoremap <silent> <buffer> <C-c><C-c> <Esc>:q<CR>
+
+autocmd FileType unite call s:unite_local_settings()
+function! s:unite_local_settings()
+  nnoremap <silent><buffer><expr> <C-w>h unite#do_action('left')
+  inoremap <silent><buffer><expr> <C-w>h unite#do_action('left')
+  nnoremap <silent><buffer><expr> <C-w>l unite#do_action('right')
+  inoremap <silent><buffer><expr> <C-w>l unite#do_action('right')
+  nnoremap <silent><buffer><expr> <C-w>k unite#do_action('above')
+  inoremap <silent><buffer><expr> <C-w>k unite#do_action('above')
+  nnoremap <silent><buffer><expr> <C-w>j unite#do_action('below')
+  inoremap <silent><buffer><expr> <C-w>j unite#do_action('below')
+endfunction
 
 " unite-outline
 nnoremap <silent> <Space>l :<C-u>Unite outline -vertical -winwidth=40<CR>
@@ -80,6 +92,9 @@ autocmd FileType javascript :setlocal shiftwidth=4
 autocmd FileType perl inoremap <buffer><expr> . smartchr#one_of('.', '->', '.')
 autocmd FileType perl inoremap <buffer><expr> , smartchr#one_of(', ', ' => ', ',')
 autocmd FileType perl inoremap <buffer><expr>  =  smartchr#loop(' = ', ' == ', ' != ', ' =~ ', ' !~ ', ' <=> ', '=')
+autocmd BufEnter *.tt set ft=tt2
+autocmd BufEnter */Hatena/*.html     set ft=tt2.html
+autocmd BufEnter */Hatena/*.tt       set ft=tt2.html
 
 " Ruby
 autocmd FileType ruby    inoremap <buffer><expr>  =  smartchr#loop(' = ', ' == ', ' === ', ' != ')
@@ -100,6 +115,9 @@ let g:rubycomplete_rails = 1
 
 " Scheme
 autocmd FileType scheme :let is_gauche=1 
+
+" less
+autocmd BufNewFile,BufRead *.less setf less
 
 " no comment when paste
 au FileType * set formatoptions-=ro

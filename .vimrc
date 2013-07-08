@@ -8,15 +8,14 @@ if has('vim_starting')
   call neobundle#rc(expand('~/.vim/bundle/'))
 endif
 
-" NeoBundle
 NeoBundle 'Shougo/vimproc'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'h1mesuke/unite-outline'
 NeoBundle 'ujihisa/unite-colorscheme'
 NeoBundle 'ujihisa/unite-font'
-" NeoBundle 'errormarker.vim'
-" NeoBundle 'scrooloose/syntastic'
+NeoBundle 'scrooloose/syntastic'
 NeoBundle 'Shougo/neocomplcache'
+NeoBundle 'Shougo/neosnippet'
 NeoBundle 'desert256.vim'
 NeoBundle 'smartword'
 NeoBundle 'sudo.vim'
@@ -24,36 +23,54 @@ NeoBundle 'hrp/EnhancedCommentify'
 NeoBundle 'surround.vim'
 NeoBundle 'h1mesuke/vim-alignta'
 NeoBundle 'kana/vim-smartchr'
+NeoBundle 'kana/vim-fakeclip'
+NeoBundle 'mattn/zencoding-vim'
+NeoBundle 'AutoClose'
+NeoBundle 'tpope/vim-fugitive'
 
-"" Language
+" Language
 NeoBundle 'hotchpotch/perldoc-vim'
-NeoBundle 'jelera/vim-javascript-syntax'
-"perlomni 遅すぎ……
-"NeoBundle 'perlomni.vim'
-NeoBundle 'rails.vim'
+NeoBundle 'pangloss/vim-javascript'
+NeoBundle 'tpope/vim-rails'
 NeoBundle 'groenewege/vim-less'
+NeoBundle 'othree/html5.vim'
+NeoBundle 'juvenn/mustache.vim'
+NeoBundle 'JSON.vim'
 
-"" colorscheme
+" colorscheme
 NeoBundle 'tomasr/molokai'
 NeoBundle 'altercation/solarized'
 NeoBundle 'jnurmine/Zenburn'
 
-" Key Mapping
-noremap ; :
-noremap : ;
+" clipboard
+if has('clipboard')
+  set clipboard=unnamed,autoselect
+endif
 
+" Unite
 let g:unite_enable_start_insert=1
-nnoremap <silent> <Space>b :<C-u>Unite buffer<CR>
-nnoremap <silent> <Space>f :<C-u>Unite file file/new -buffer-name=file<CR>
-nnoremap <silent> <Space>g :<C-u>Unite file_rec -buffer-name=file<CR>
-nnoremap <silent> <Space>z :<C-u>Unite file_mru<CR>
-nnoremap <silent> <Space>r :<C-u>Unite register -buffer-name=register<CR>
+nnoremap <silent> <Space>o :<C-u>Unite file_mru file file/new directory/new -no-split -buffer-name=files<CR>
+nnoremap <silent> <Space>O :<C-u>UniteWithBufferDir  file_mru file file/new directory/new -no-split -buffer-name=files<CR>
+nnoremap <silent> <Space>b :<C-u>Unite buffer -immediately<CR>
+nnoremap <silent> <Space>f :<C-u>Unite file_rec/async -no-split -buffer-name=files<CR>
+nnoremap <silent> <Space>r :<C-u>Unite register history/yank -buffer-name=register<CR>
+nnoremap <silent> <Space>/ :<C-u>Unite line -buffer-name=search -start-insert<CR>
+nnoremap <silent> <Space>* :<C-u>UniteWithCursorWord line -buffer-name=search<CR>
+nnoremap <silent> <Space>n :<C-u>UniteResume search -no-start-insert<CR>
+
+" unite-grep
+let g:unite_source_grep_command = 'ag'
+let g:unite_source_grep_default_opts = '--nocolor --nogroup'
+let g:unite_source_grep_recursive_opt = ''
+let g:unite_source_grep_max_candidates = 200
+
+nnoremap <silent> <Space>g :<C-u>Unite grep -buffer-name=search<CR>
+vnoremap g* y:Unite grep<CR><CR><C-R>=escape(@", '\\.*$^[]')<CR><CR>
 
 au FileType unite nnoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
 au FileType unite inoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
 au FileType unite nnoremap <silent> <buffer> <expr> <C-l> unite#do_action('vsplit')
 au FileType unite inoremap <silent> <buffer> <expr> <C-l> unite#do_action('vsplit')
-" ESCキーを2回押すと終了する
 au FileType unite nnoremap <silent> <buffer> <C-c><C-c> :q<CR>
 au FileType unite inoremap <silent> <buffer> <C-c><C-c> <Esc>:q<CR>
 
@@ -76,6 +93,16 @@ nnoremap <silent> <Space>L :<C-u>Unite outline -no-quit -vertical -winwidth=40 -
 " syntastic
 let g:syntastic_auto_loc_list=2
 
+" fugitive
+nmap ,g [fugitive]
+nnoremap [fugitive]s :<C-u>Gstatus<CR>
+nnoremap [fugitive]c :<C-u>Gcommit<CR>
+nnoremap [fugitive]C :<C-u>Gcommit --amend<CR>
+nnoremap [fugitive]b :<C-u>Gblame<CR>
+nnoremap [fugitive]a :<C-u>Gwrite<CR>
+nnoremap [fugitive]d :<C-u>Gdiff<CR>
+nnoremap [fugitive]D :<C-u>Gdiff --staged<CR>
+
 " smartchr
 inoremap <buffer><expr> = smartchr#loop(' = ', ' == ', '=')
 
@@ -83,54 +110,90 @@ inoremap <buffer><expr> = smartchr#loop(' = ', ' == ', '=')
 autocmd FileType html inoremap <buffer><expr> = smartchr#loop('=')
 
 " JavaScript
-autocmd FileType javascript inoremap <buffer><expr> = smartchr#loop(' = ', ' == ', ' === ', '=')
+autocmd FileType javascript inoremap <buffer><expr> = smartchr#loop(' = ', ' === ', ' !== ', '=')
+autocmd FileType javascript inoremap <buffer><expr> , smartchr#one_of(', ', ',')
 autocmd FileType javascript inoremap <buffer><expr> \ smartchr#one_of('function ', '\')
-autocmd FileType javascript :setlocal softtabstop=4
-autocmd FileType javascript :setlocal shiftwidth=4
+
+" JSON
+autocmd BufEnter *.json set filetype=json
 
 " Perl
 autocmd FileType perl inoremap <buffer><expr> . smartchr#one_of('.', '->', '.')
 autocmd FileType perl inoremap <buffer><expr> , smartchr#one_of(', ', ' => ', ',')
 autocmd FileType perl inoremap <buffer><expr>  =  smartchr#loop(' = ', ' == ', ' != ', ' =~ ', ' !~ ', ' <=> ', '=')
 autocmd BufEnter *.tt set ft=tt2
-autocmd BufEnter */Hatena/*.html     set ft=tt2.html
-autocmd BufEnter */Hatena/*.tt       set ft=tt2.html
 
 " Ruby
-autocmd FileType ruby    inoremap <buffer><expr>  =  smartchr#loop(' = ', ' == ', ' === ', ' != ')
+autocmd FileType ruby    inoremap <buffer><expr>  =  smartchr#loop(' = ', ' == ', ' != ')
 autocmd FileType ruby    inoremap <buffer><expr> , smartchr#loop(', ', ' => ', ',')
+autocmd FileType ruby  inoremap <buffer><expr> + smartchr#loop(' + ', ' += ', '+')
+autocmd FileType ruby  inoremap <buffer><expr> - smartchr#loop('-', ' - ', ' -= ')
+imap <C-Space> <C-x><C-o>
+let g:rubycomplete_buffer_loading=1
+let g:rubycomplete_classes_in_global=1
+let g:rubycomplete_rails=1
+
+" Python
+autocmd FileType python  inoremap <buffer><expr>  =  smartchr#loop(' = ', ' == ', ' != ')
+autocmd FileType python  inoremap <buffer><expr> , smartchr#loop(', ', ',')
+autocmd FileType python  inoremap <buffer><expr> + smartchr#loop(' + ', ' += ', '+')
+autocmd FileType python  inoremap <buffer><expr> - smartchr#loop('-', ' - ', ' -= ')
+
 
 " Haskell
 autocmd FileType haskell setl autoindent
 autocmd FileType haskell setl smartindent
 
+" C
+autocmd FileType c inoremap <buffer><expr> , smartchr#loop(', ', ',')
+autocmd FileType c inoremap <buffer><expr> . smartchr#one_of('.', '->', '.')
+
 "Coffee
 autocmd BufWritePost *.coffee silent CoffeeMake! -cb | cwindow | redraw!
 
-" Ruby
-imap <C-Space> <C-x><C-o>
-let g:rubycomplete_buffer_loading = 1
-let g:rubycomplete_classes_in_global = 1
-let g:rubycomplete_rails = 1
-
 " Scheme
-autocmd FileType scheme :let is_gauche=1 
+autocmd FileType scheme :let is_gauche=1
 
 " less
 autocmd BufNewFile,BufRead *.less setf less
+
+" mustache
+autocmd FileType mustache inoremap <buffer><expr> { smartchr#loop('{{', '{')
+autocmd FileType mustache inoremap <buffer><expr> } smartchr#loop('}}', '}')
+autocmd BufNewFile,BufRead *.hjs setf mustache
+
+" Hatena
+autocmd BufEnter **/Hatena/**/*.js setlocal softtabstop=4 shiftwidth=4
+autocmd BufEnter **/Hatena/**/*.less setlocal softtabstop=4 shiftwidth=4
+autocmd BufEnter **/Hatena/** setlocal path+=lib/ path+=templates/ path+=static/
+autocmd BufEnter **/Hatena/**.tt setlocal includeexpr=substitute(v:fname,'^\\/','','') path+=static/
+autocmd BufEnter */Hatena/*.html     set ft=tt2.html
+autocmd BufEnter */Hatena/*.tt       set ft=tt2.html
+
+
+"zen-coding.vim
+let g:user_zen_settings  =  {
+      \ 'indentation': ' ',
+\ }
 
 " no comment when paste
 au FileType * set formatoptions-=ro
 
 nnoremap <silent> <Space>. :<C-u>edit $MYVIMRC<CR>
 
+" Key Mapping
+noremap ; :
+noremap : ;
+nnoremap j gj
+nnoremap k gk
+nnoremap Y y$
+nnoremap K <C-Y>
+nnoremap J <C-E>
+
 "Reload .vimrc
 nnoremap <silent> <Space>s. :<C-u>source $MYVIMRC<CR>
 
 nnoremap <silent> <Space>, :<C-u>edit ~/.zshrc<CR>
-
-"Start NERDTree
-nnoremap <silent> <Space>n :<C-u>NERDTree<CR>
 
 " ctags
 set tags=tags
@@ -145,6 +208,14 @@ nnoremap ,mi :<C-u>Rmigration
 nnoremap <silent> ,sc :<C-u>Rschema<CR>
 nnoremap <silent> ,u :<C-u>Rroutes<CR>
 nnoremap ,sp :<C-u>Rspec 
+
+" 選択範囲を検索する
+vnoremap z/ <ESC>/\%V
+vnoremap z? <ESC>?\%V
+vnoremap <silent> * "vy/\V<C-r>=substitute(escape(@v,'\/'),"\n",'\\n','g')<CR><CR>
+
+" machit.vim
+source $VIMRUNTIME/macros/matchit.vim
 
 " setting
 set enc=utf-8
@@ -161,7 +232,6 @@ set tabstop=2
 set softtabstop=2
 set shiftwidth=2
 set expandtab
-set nolist
 set showmatch
 set matchtime=2
 set hlsearch
@@ -194,14 +264,21 @@ syntax enable
 set background=dark
 let g:solarized_termcolors=256
 colorscheme solarized
-"colorscheme molokai
 
 set wrap
-highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=darkgray
-match ZenkakuSpace /　/
+set listchars=tab:>.,trail:_,extends:\
+set list
+
+highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=lightblue
+autocmd VimEnter,WinEnter * match ZenkakuSpace /　/
+
+set cursorline
 
 "quickrun.vim
-silent! nmap <unique> <Space>r <Plug>(quickrun)
+silent! nmap <unique> <Leader>r <Plug>(quickrun)
+
+let g:quickrun_config = {}
+let g:quickrun_config.python = {'command' : '/usr/local/bin/python'}
 
 " Use neocomplcache.
 let g:neocomplcache_enable_at_startup = 1
@@ -218,17 +295,17 @@ let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
 let g:neocomplcache_dictionary_filetype_lists = {
      \ 'default' : ''
                  \ }
-let g:neocomplcache_snippets_dir = $HOME . '/.vim/snippets'
+
+let g:neosnippet#disable_select_mode_mappings = 0
+let g:neosnippet#snippets_directory = '~/.vim/snippets'
+imap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+
 " Plugin key-mappings.
-imap <C-k>     <Plug>(neocomplcache_snippets_expand)
-smap <C-k>     <Plug>(neocomplcache_snippets_expand)
 inoremap <expr><C-g>     neocomplcache#undo_completion()
 inoremap <expr><C-l>     neocomplcache#complete_common_string()
 inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
 inoremap <expr><C-y>  neocomplcache#close_popup()
 inoremap <expr><C-e>  neocomplcache#cancel_popup()
-imap <expr><TAB> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : pumvisible() ? "\<C-n>" : "\<TAB>"
-smap <expr><TAB> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : pumvisible() ? "\<C-n>" : "\<TAB>"
-
 
 filetype plugin indent on

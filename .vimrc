@@ -53,6 +53,7 @@ nnoremap <silent> <Space>o :<C-u>Unite file_mru file file/new directory/new -no-
 nnoremap <silent> <Space>O :<C-u>UniteWithBufferDir  file_mru file file/new directory/new -no-split -buffer-name=files<CR>
 nnoremap <silent> <Space>b :<C-u>Unite buffer -immediately<CR>
 nnoremap <silent> <Space>f :<C-u>Unite file_rec/async -no-split -buffer-name=files<CR>
+nnoremap <Space>F :<C-u>Unite -no-split -buffer-name=files file_rec/async:
 nnoremap <silent> <Space>r :<C-u>Unite register history/yank -buffer-name=register<CR>
 nnoremap <silent> <Space>/ :<C-u>Unite line -buffer-name=search -start-insert<CR>
 nnoremap <silent> <Space>* :<C-u>UniteWithCursorWord line -buffer-name=search<CR>

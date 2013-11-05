@@ -58,6 +58,18 @@ nnoremap <silent> <Space>r :<C-u>Unite register history/yank -buffer-name=regist
 nnoremap <silent> <Space>/ :<C-u>Unite line -buffer-name=search -start-insert<CR>
 nnoremap <silent> <Space>* :<C-u>UniteWithCursorWord line -buffer-name=search<CR>
 nnoremap <silent> <Space>n :<C-u>UniteResume search -no-start-insert<CR>
+autocmd BufEnter **/Hatena-Epic/** call s:epic_local_settings()
+
+function! s:epic_local_settings()
+  command! Eepic :Unite -no-split -buffer-name=files -input=lib/Hatena/Epic/ file file/new directory/new
+  command! Eblogs :Unite -no-split -buffer-name=files -input=lib/Hatena/Epic/Blogs/ file file/new directory/new
+  command! Eadmin :Unite -no-split -buffer-name=files -input=lib/Hatena/Epic/Admin/ file file/new directory/new
+  command! Emodel :Unite -no-split -buffer-name=files -input=lib/Hatena/Epic/Model/ file file/new directory/new
+  command! Etemplates :Unite -no-split -buffer-name=files file_rec/async:templates/
+  command! Etest :Unite -no-split -buffer-name=files file_rec/async:t/
+  command! Eservice :Unite -no-split -buffer-name=files -input=lib/Hatena/Epic/Service/ file file/new directory/new
+  command! Eless :Unite -no-split -buffer-name=files file_rec/async:static/less/
+endfunction
 
 " unite-grep
 let g:unite_source_grep_command = 'ag'
@@ -122,7 +134,7 @@ autocmd BufEnter *.json set filetype=json
 autocmd FileType perl inoremap <buffer><expr> . smartchr#one_of('.', '->', '.')
 autocmd FileType perl inoremap <buffer><expr> , smartchr#one_of(', ', ' => ', ',')
 autocmd FileType perl inoremap <buffer><expr>  =  smartchr#loop(' = ', ' == ', ' != ', ' =~ ', ' !~ ', ' <=> ', '=')
-autocmd BufEnter *.tt set ft=tt2
+autocmd BufEnter *.tt setlocal ft=tt2.html
 
 " Ruby
 autocmd FileType ruby    inoremap <buffer><expr>  =  smartchr#loop(' = ', ' == ', ' != ')
@@ -168,8 +180,7 @@ autocmd BufEnter **/Hatena/**/*.js setlocal softtabstop=4 shiftwidth=4
 autocmd BufEnter **/Hatena/**/*.less setlocal softtabstop=4 shiftwidth=4
 autocmd BufEnter **/Hatena/** setlocal path+=lib/ path+=templates/ path+=static/
 autocmd BufEnter **/Hatena/**.tt setlocal includeexpr=substitute(v:fname,'^\\/','','') path+=static/
-autocmd BufEnter */Hatena/*.html     set ft=tt2.html
-autocmd BufEnter */Hatena/*.tt       set ft=tt2.html
+autocmd BufEnter **/Hatena/**/*.html     setlocal ft=tt2.html
 
 
 "zen-coding.vim
@@ -274,6 +285,13 @@ highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=lightblue
 autocmd VimEnter,WinEnter * match ZenkakuSpace /　/
 
 set cursorline
+
+" highlight too long line
+set textwidth=0
+if exists('&colorcolumn')
+  set colorcolumn=+1
+  autocmd FileType c,cpp,perl,ruby,python,haskell,scheme,javascript setlocal textwidth=80
+endif
 
 "quickrun.vim
 silent! nmap <unique> <Leader>r <Plug>(quickrun)

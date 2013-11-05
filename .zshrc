@@ -48,6 +48,9 @@ alias ....='cd ../../../'
 alias kmc='ssh uiureo@kmc.gr.jp'
 alias ios-simulator='open /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Applications/iPhone\ Simulator.app'
 
+alias -g G="| grep"
+alias -g L="| less -R"
+
 alias memo='vi ~/memo/'
 alias gosh='rlwrap gosh'
 alias chrome='open -a Google\ Chrome'
@@ -81,6 +84,7 @@ alias svn-pull='git stash && git svn rebase && git stash pop'
 alias g='git'
 alias gs='git status'
 alias ga='git add'
+alias gap='git add -p'
 alias gc='git commit'
 alias gp='git push'
 alias gl='git log'
@@ -92,6 +96,7 @@ alias gcl='git reset'
 
 alias gcc='gcc -Wall'
 alias g++='g++ -Wall'
+alias clang='clang -Wall'
 
 alias tmux='tmux -2'
 
@@ -266,3 +271,5 @@ elif type compctl &>/dev/null; then
   compctl -K _bower_completion bower
 fi
 ###-end-bower-completion-###
+
+[ -s $HOME/.nvm/nvm.sh ] && . $HOME/.nvm/nvm.sh  # This loads NVM

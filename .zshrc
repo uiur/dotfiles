@@ -1,3 +1,5 @@
+fpath=($HOME/.zsh-completions $fpath)
+
 autoload colors
 colors
 
@@ -10,7 +12,7 @@ precmd_vcs_info () {
 }
 precmd_functions=($precmd_functions precmd_vcs_info)
 
-PROMPT="%K{black}%B%{${fg[blue]}%}%r%~%{${reset_color}%}%% "
+PROMPT="%K{white}%B%{${fg[blue]}%}%r%~%{${reset_color}%}%% "
 RPROMPT="%1(v|%F{yellow}%1v%f|)"
 PROMPT2="%{${fg[green]}%}%_%{${reset_color}%}%1(v|%{${vcs_info_msg_0_}%}|)%% "
 SPROMPT="%B%{${fg[yellow]}%}%r is correct? [n,y,a,e]:%{${reset_color}%}%b "
@@ -26,7 +28,12 @@ esac
 
 export LSCOLORS=gxfxxxxxcxxxxxxxxxgxgx
 export LS_COLORS='di=01;36:ln=01;35:ex=01;32'
-zstyle ':completion:*' list-colors 'di=36' 'ln=35' 'ex=32'
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z} r:|[-_.]=**'
+
+autoload -U compinit
+compinit
+
 
 ## aliases
 #
@@ -103,9 +110,6 @@ alias tmux='tmux -2'
 # vim key-bind
 bindkey -v
 
-autoload -U compinit
-compinit
-
 HISTFILE=~/.zsh_history
 HISTSIZE=100000
 SAVEHIST=100000
@@ -160,7 +164,6 @@ function precmd_z () {
 }
 precmd_functions=($precmd_functions precmd_z)
 
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z} r:|[-_.]=**'
 ###-begin-npm-completion-###
 #
 # npm command completion script

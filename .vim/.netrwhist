@@ -1,3 +1,5 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =1
-let g:netrw_dirhist_1='/Users/zat/src/rails/ks/app/controllers'
+let g:netrw_dirhist_cnt =3
+let g:netrw_dirhist_1='/Users/zat/.rbenv/versions/2.1.0/lib/ruby/gems/2.1.0/gems/rails-assets-angular-1.2.16/vendor'
+let g:netrw_dirhist_2='/Users/zat/.rbenv/versions/2.1.0/lib/ruby/gems/2.1.0/gems/rails-assets-angular-1.2.16'
+let g:netrw_dirhist_3='/Users/zat/.rbenv/versions/2.1.0/lib/ruby/gems/2.1.0/gems'

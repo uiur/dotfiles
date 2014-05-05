@@ -71,6 +71,8 @@ alias gei='gem install'
 alias ges='gem search -r'
 alias geu='gem uninstall'
 
+alias be='bundle exec'
+
 alias ra='rails'
 alias ras='rails s'
 alias rac='rails c'
@@ -84,6 +86,8 @@ alias bun='bundle'
 alias bunin='bundle install'
 alias bune='bundle exec'
 alias m='mate'
+
+eval "$(hub alias -s)"
 
 alias svn-push='git stash && git svn dcommit && git stash pop'
 alias svn-pull='git stash && git svn rebase && git stash pop'
@@ -276,3 +280,4 @@ fi
 ###-end-bower-completion-###
 
 [ -s $HOME/.nvm/nvm.sh ] && . $HOME/.nvm/nvm.sh  # This loads NVM
+source /Users/zat/Code/zaw/zaw.zsh

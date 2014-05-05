@@ -1,6 +1,6 @@
 export PATH=/usr/local/bin:/usr/bin:~/.cabal/bin/:~/bin/:/usr/texbin/:$(npm bin -g 2>/dev/null):/usr/local/opt/mysql55/bin:$PATH
 export EDITOR=vim
-export NODE_PATH=/usr/local/lib/node_modules:$(npm prefix -g 2>/dev/null):$PATH
+export NODE_PATH=/usr/local/lib/node_modules:/Users/zat/.nvm/v0.11.8/lib/node_modules:$(npm prefix -g 2>/dev/null):$PATH
 export LANG=ja_JP.UTF-8
 
 ## gisty

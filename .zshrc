@@ -93,7 +93,7 @@ alias svn-push='git stash && git svn dcommit && git stash pop'
 alias svn-pull='git stash && git svn rebase && git stash pop'
 
 alias g='git'
-alias gs='git status'
+# alias gs='git status'
 alias ga='git add'
 alias gap='git add -p'
 alias gc='git commit'
@@ -110,6 +110,10 @@ alias g++='g++ -Wall'
 alias clang='clang -Wall'
 
 alias tmux='tmux -2'
+alias nw='/Applications/node-webkit.app/Contents/MacOS/node-webkit'
+
+# peco utility function
+p() { peco | while read LINE; do $@ $LINE; done }
 
 # vim key-bind
 bindkey -v
@@ -128,7 +132,7 @@ bindkey "^P" history-beginning-search-backward-end
 bindkey "^N" history-beginning-search-forward-end
 
 setopt auto_cd
-setopt auto_pushd 
+setopt auto_pushd
 setopt correct
 setopt list_packed
 setopt noautoremoveslash
@@ -281,3 +285,51 @@ fi
 
 [ -s $HOME/.nvm/nvm.sh ] && . $HOME/.nvm/nvm.sh  # This loads NVM
 source /Users/zat/Code/zaw/zaw.zsh
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"
+
+# The next line updates PATH for the Google Cloud SDK.
+source '/Users/zat/google-cloud-sdk/path.zsh.inc'
+
+# peco
+if which peco &> /dev/null; then
+  function peco_select_history() {
+    local tac
+    (which gtac &> /dev/null && tac="gtac") || \
+    (which tac &> /dev/null && tac="tac") || \
+    tac="tail -r"
+    BUFFER=$(fc -l -n 1 | eval $tac | peco --query "$LBUFFER")
+    CURSOR=$#BUFFER # move cursor
+    zle -R -c       # refresh
+  }
+
+  zle -N peco_select_history
+  bindkey '^R' peco_select_history
+
+  function peco-git-branch-selector() {
+    local tac
+    if which tac > /dev/null; then
+      tac="tac"
+    else
+      tac="tail -r"
+    fi
+
+    git rev-parse --git-dir >/dev/null 2>&1
+    if [[ $? == 0 ]]; then
+      BUFFER=$(git for-each-ref --count=30 --sort=-committerdate refs/heads/ --format="%(refname:short)"\
+        | peco --query "$LBUFFER")
+      if [[ $? == 0 ]];then
+        BUFFER=$(echo $BUFFER)
+        BUFFER=$(git checkout $BUFFER)
+        CURSOR=$#BUFFER
+      fi
+    fi
+    zle -R -c
+  }
+
+  alias gco="peco-git-branch-selector"
+fi
+
+# added by travis gem
+[ -f /Users/zat/.travis/travis.sh ] && source /Users/zat/.travis/travis.sh

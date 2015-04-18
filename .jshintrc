@@ -13,5 +13,10 @@
   "undef": true,
   "unused": true,
   "maxlen": 80,
-  "asi": true
+  "asi": true,
+  "laxcomma": true,
+  "laxbreak": true,
+  "globals": {
+    "angular": true
+  }
 }

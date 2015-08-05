@@ -1,30 +1,7 @@
-fpath=($HOME/.zsh-completions $fpath)
+fpath=($HOME/.zsh-completions /usr/local/share/zsh/site-functions $fpath)
 
 autoload colors
 colors
-
-autoload -Uz vcs_info
-zstyle ':vcs_info:*' formats "[%b]"
-precmd_vcs_info () {
-  psvar=()
-  LANG=en_US.UTF-8 vcs_info
-  [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
-}
-precmd_functions=($precmd_functions precmd_vcs_info)
-
-PROMPT="%K{white}%B%{${fg[blue]}%}%r%~%{${reset_color}%}%% "
-RPROMPT="%1(v|%F{yellow}%1v%f|)"
-PROMPT2="%{${fg[green]}%}%_%{${reset_color}%}%1(v|%{${vcs_info_msg_0_}%}|)%% "
-SPROMPT="%B%{${fg[yellow]}%}%r is correct? [n,y,a,e]:%{${reset_color}%}%b "
-
-case "${TERM}" in
-kterm*|xterm*)
-  precmd_term() {
-      echo -ne "\033]0;${USER}@${HOST%%.*}\007"
-  }
-  precmd_functions=($precmd_functions precmd_term)
-  ;;
-esac
 
 export LSCOLORS=gxfxxxxxcxxxxxxxxxgxgx
 export LS_COLORS='di=01;36:ln=01;35:ex=01;32'
@@ -34,11 +11,11 @@ zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z} r:|[-_.]=**'
 autoload -U compinit
 compinit
 
+autoload -U promptinit && promptinit
+prompt pure
 
 ## aliases
-#
 alias v='vim'
-alias gvim='env LANG=ja_JP.UTF-8 open -a /Applications/MacVim.app "$@"'
 alias reload='source ~/.zshrc'
 alias re='source ~/.zshrc'
 alias l='ls -G'
@@ -52,7 +29,6 @@ alias rmr='rm -rf'
 alias ..='cd ../'
 alias ...='cd ../../'
 alias ....='cd ../../../'
-alias kmc='ssh uiureo@kmc.gr.jp'
 alias ios-simulator='open /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Applications/iPhone\ Simulator.app'
 
 alias -g G="| grep"
@@ -85,15 +61,10 @@ alias rash='rails-sh'
 alias bun='bundle'
 alias bunin='bundle install'
 alias bune='bundle exec'
-alias m='mate'
 
 eval "$(hub alias -s)"
 
-alias svn-push='git stash && git svn dcommit && git stash pop'
-alias svn-pull='git stash && git svn rebase && git stash pop'
-
 alias g='git'
-# alias gs='git status'
 alias ga='git add'
 alias gap='git add -p'
 alias gc='git commit'
@@ -333,3 +304,9 @@ fi
 
 # added by travis gem
 [ -f /Users/zat/.travis/travis.sh ] && source /Users/zat/.travis/travis.sh
+
+export DOCKER_HOST=tcp://192.168.59.103:2376
+export DOCKER_CERT_PATH=/Users/zat/.boot2docker/certs/boot2docker-vm
+export DOCKER_TLS_VERIFY=1
+
+source /Users/zat/Code/shr/shr

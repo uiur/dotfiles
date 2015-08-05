@@ -3,10 +3,10 @@ fpath=($HOME/.zsh-completions /usr/local/share/zsh/site-functions $fpath)
 autoload colors
 colors
 
-export LSCOLORS=gxfxxxxxcxxxxxxxxxgxgx
-export LS_COLORS='di=01;36:ln=01;35:ex=01;32'
-zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z} r:|[-_.]=**'
+# export LSCOLORS=gxfxxxxxcxxxxxxxxxgxgx
+# export LS_COLORS='di=01;36:ln=01;35:ex=01;32'
+# zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+# zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z} r:|[-_.]=**'
 
 autoload -U compinit
 compinit
@@ -23,65 +23,15 @@ alias ls='ls -G'
 alias la='ls -a'
 alias ll='ls -l'
 alias lal='ls -al'
-alias mk='mkdir'
 alias p='popd > /dev/null'
-alias rmr='rm -rf'
-alias ..='cd ../'
-alias ...='cd ../../'
-alias ....='cd ../../../'
-alias ios-simulator='open /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Applications/iPhone\ Simulator.app'
-
-alias -g G="| grep"
-alias -g L="| less -R"
-
-alias memo='vi ~/memo/'
-alias gosh='rlwrap gosh'
-alias chrome='open -a Google\ Chrome'
-alias canary='open -a Google\ Chrome\ Canary'
-alias i='pry'
-alias rspec='rspec -c'
-alias jakld='rlwrap java -jar ~/Code/Scheme/jakld.jar'
-alias jak='jakld'
-alias pad='padrino'
-alias gei='gem install'
-alias ges='gem search -r'
-alias geu='gem uninstall'
 
 alias be='bundle exec'
 
-alias ra='rails'
-alias ras='rails s'
-alias rac='rails c'
-alias rag='rails g'
-alias mig='rake db:migrate'
-alias rusc='ruby script/console'
-
-alias ru='ruby'
-alias rash='rails-sh'
-alias bun='bundle'
-alias bunin='bundle install'
-alias bune='bundle exec'
-
 eval "$(hub alias -s)"
-
-alias g='git'
-alias ga='git add'
-alias gap='git add -p'
-alias gc='git commit'
-alias gp='git push'
-alias gl='git log'
-alias gd='git diff'
-alias gb='git branch'
-alias gch='git checkout'
-alias gr='git reset'
-alias gcl='git reset'
 
 alias gcc='gcc -Wall'
 alias g++='g++ -Wall'
 alias clang='clang -Wall'
-
-alias tmux='tmux -2'
-alias nw='/Applications/node-webkit.app/Contents/MacOS/node-webkit'
 
 # peco utility function
 p() { peco | while read LINE; do $@ $LINE; done }

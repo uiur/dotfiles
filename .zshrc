@@ -3,10 +3,7 @@ fpath=($HOME/.zsh-completions /usr/local/share/zsh/site-functions $fpath)
 autoload colors
 colors
 
-# export LSCOLORS=gxfxxxxxcxxxxxxxxxgxgx
-# export LS_COLORS='di=01;36:ln=01;35:ex=01;32'
-# zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
-# zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z} r:|[-_.]=**'
+PURE_GIT_PULL=0
 
 autoload -U compinit
 compinit
@@ -14,10 +11,10 @@ compinit
 autoload -U promptinit && promptinit
 prompt pure
 
+# Ignore cases in completion
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z} r:|[-_.]=**'
+
 ## aliases
-alias v='vim'
-alias reload='source ~/.zshrc'
-alias re='source ~/.zshrc'
 alias l='ls -G'
 alias ls='ls -G'
 alias la='ls -a'
@@ -258,5 +255,11 @@ fi
 export DOCKER_HOST=tcp://192.168.59.103:2376
 export DOCKER_CERT_PATH=/Users/zat/.boot2docker/certs/boot2docker-vm
 export DOCKER_TLS_VERIFY=1
+
+boot2docker-up() {
+  [ "$(boot2docker status)" = "running" ] || boot2docker up
+}
+
+alias docker='boot2docker-up && docker'
 
 source /Users/zat/Code/shr/shr
